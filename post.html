@@ -1,0 +1,889 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Calibrated Trust Is a Design Problem | The Human Factor (preview)</title><style>body{margin:0;background:#0a0d14;overflow-x:hidden}/* =====================================================================
+   THE [Hu]MAN FACTOR : WordPress custom page styles (dark mode only)
+   Paste into Appearance > Customize > Additional CSS
+   (or a child theme stylesheet). Every rule is scoped to .thf so it
+   will not collide with your theme.
+   Target: WCAG 2.2 Level AA. All text/background pairs below are
+   verified at 4.5:1 or higher; UI boundaries and focus at 3:1 or higher.
+   ===================================================================== */
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Sora:wght@600;700;800&display=swap");
+
+/* ---------- Tokens ---------- */
+.thf {
+  color-scheme: dark;
+
+  --thf-bg: #0a0d14;
+  --thf-surface: #121826;
+  --thf-surface-2: #1a2234;
+  --thf-border: #2b3652;          /* decorative dividers */
+  --thf-border-strong: #6b7a9c;   /* control boundaries, 3:1+ */
+
+  --thf-text: #eef2f8;            /* 17.3:1 on bg */
+  --thf-muted: #b3bdd0;           /* 10.3:1 on bg, 8.4:1 on surface-2 */
+
+  /* Brand, pulled from the logo and lifted for contrast on dark */
+  --thf-magenta: #e98fff;
+  --thf-violet: #b39bff;
+  --thf-blue: #6cc0ff;
+  --thf-cyan: #4fe3f2;
+  --thf-green: #55eaa9;
+
+  --thf-focus: #ffe066;
+  --thf-on-accent: #06121a;
+
+  --thf-grad: linear-gradient(100deg, var(--thf-magenta) 0%, var(--thf-blue) 50%, var(--thf-green) 100%);
+  --thf-grad-btn: linear-gradient(100deg, var(--thf-cyan), var(--thf-green));
+
+  --thf-font-head: "Sora", "Segoe UI", system-ui, sans-serif;
+  --thf-font-body: "Inter", "Segoe UI", system-ui, sans-serif;
+
+  --thf-radius: 14px;
+  --thf-max: 1180px;
+  --thf-gutter: clamp(1rem, 4vw, 2rem);
+
+  background: var(--thf-bg);
+  color: var(--thf-text);
+  font-family: var(--thf-font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+}
+
+.thf *,
+.thf *::before,
+.thf *::after { box-sizing: border-box; }
+
+/* Full-bleed escape for themes that constrain content width.
+   Use a full-width page template where your theme offers one. */
+.thf.thf--bleed {
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+}
+
+.thf-wrap {
+  width: 100%;
+  max-width: var(--thf-max);
+  margin-inline: auto;
+  padding-inline: var(--thf-gutter);
+}
+
+.thf section { padding-block: clamp(3rem, 7vw, 5.5rem); }
+.thf section + section { border-top: 1px solid var(--thf-border); }
+
+/* ---------- Typography ---------- */
+.thf h1, .thf h2, .thf h3, .thf h4 {
+  font-family: var(--thf-font-head);
+  color: var(--thf-text);
+  line-height: 1.2;
+  margin: 0 0 .6em;
+  letter-spacing: -0.01em;
+}
+.thf h1 { font-size: clamp(2.25rem, 5.5vw, 3.75rem); font-weight: 800; }
+.thf h2 { font-size: clamp(1.75rem, 3.5vw, 2.5rem); font-weight: 700; }
+.thf h3 { font-size: 1.25rem; font-weight: 700; }
+.thf h4 { font-size: 1.0625rem; font-weight: 700; }
+.thf p { margin: 0 0 1.1em; max-width: 70ch; }
+.thf p:last-child { margin-bottom: 0; }
+
+.thf-lede { font-size: clamp(1.125rem, 2vw, 1.3rem); color: var(--thf-muted); }
+
+/* Gradient text. Every stop passes 4.5:1 on --thf-bg; solid fallback first. */
+.thf-grad-text {
+  color: var(--thf-cyan);
+  background: var(--thf-grad);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+@media (forced-colors: active) {
+  .thf-grad-text { -webkit-text-fill-color: currentColor; background: none; }
+}
+
+/* Bracket eyebrow, echoing [Hu] in the logo */
+.thf-eyebrow {
+  display: inline-block;
+  font-family: var(--thf-font-head);
+  font-size: .875rem;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--thf-cyan);
+  margin: 0 0 1rem;
+}
+.thf-eyebrow::before { content: "[ "; color: var(--thf-magenta); }
+.thf-eyebrow::after  { content: " ]"; color: var(--thf-magenta); }
+
+.thf-section-head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 1rem 2rem; margin-bottom: 2rem; }
+.thf-section-head h2 { margin: 0; }
+.thf-section-head p { margin: .5rem 0 0; color: var(--thf-muted); }
+
+/* ---------- Links & focus ---------- */
+.thf a {
+  color: var(--thf-cyan);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .2em;
+}
+.thf a:hover { color: var(--thf-green); text-decoration-thickness: 2px; }
+
+.thf a:focus-visible,
+.thf button:focus-visible,
+.thf summary:focus-visible,
+.thf input:focus-visible,
+.thf [tabindex]:focus-visible {
+  outline: 3px solid var(--thf-focus);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+/* WCAG 2.4.11: keep focused items clear of sticky theme headers */
+.thf :is(a, button, summary, input) { scroll-margin-block: 6rem; }
+
+/* ---------- Buttons (min 44px tall, exceeds 2.5.8) ---------- */
+.thf-btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+  min-height: 44px; padding: .7rem 1.35rem;
+  font-family: var(--thf-font-head); font-weight: 700; font-size: 1rem; line-height: 1.2;
+  border-radius: 999px; text-decoration: none !important;
+  border: 2px solid transparent; cursor: pointer;
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+.thf-btn--primary { background: var(--thf-grad-btn); color: var(--thf-on-accent) !important; }
+.thf-btn--primary:hover { box-shadow: 0 0 0 4px rgba(79, 227, 242, .25); color: var(--thf-on-accent) !important; }
+.thf-btn--ghost { border-color: var(--thf-border-strong); color: var(--thf-text) !important; background: transparent; }
+.thf-btn--ghost:hover { border-color: var(--thf-cyan); color: var(--thf-cyan) !important; }
+.thf-btn-row { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 2rem; }
+
+/* ---------- Hero ---------- */
+.thf-hero {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(60rem 30rem at 85% -10%, rgba(179, 155, 255, .16), transparent 60%),
+    radial-gradient(40rem 24rem at 0% 110%, rgba(85, 234, 169, .10), transparent 60%),
+    var(--thf-bg);
+}
+.thf-hero__logo { display: block; width: min(560px, 100%); height: auto; margin: 0 0 2rem -0.5rem; }
+.thf-hero h1 { max-width: 18ch; }
+.thf-hero .thf-lede { max-width: 58ch; }
+.thf-circuit { position: absolute; right: -2rem; bottom: 1rem; width: min(520px, 55%); opacity: .5; pointer-events: none; }
+@media (max-width: 720px) { .thf-circuit { display: none; } }
+
+.thf-page-head { padding-block: clamp(3rem, 6vw, 4.5rem) !important; background: radial-gradient(50rem 22rem at 90% -20%, rgba(108, 192, 255, .14), transparent 60%), var(--thf-bg); }
+.thf-page-head h1 { font-size: clamp(2rem, 4.5vw, 3.1rem); }
+
+/* ---------- Grids ---------- */
+.thf-grid { display: grid; gap: 1.25rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); }
+.thf-grid--2 { grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); }
+.thf-list-reset { list-style: none; margin: 0; padding: 0; }
+
+/* ---------- Post cards (whole card clickable via stretched link) ---------- */
+.thf-card {
+  position: relative; display: flex; flex-direction: column;
+  background: var(--thf-surface); border: 1px solid var(--thf-border);
+  border-radius: var(--thf-radius); padding: 1.5rem; height: 100%;
+  transition: border-color .2s ease, transform .2s ease;
+}
+.thf-card::before {
+  content: ""; position: absolute; inset: 0 0 auto 0; height: 3px;
+  border-radius: var(--thf-radius) var(--thf-radius) 0 0;
+  background: var(--thf-grad); opacity: .85;
+}
+.thf-card:hover { border-color: var(--thf-border-strong); transform: translateY(-2px); }
+.thf-card:focus-within { outline: 3px solid var(--thf-focus); outline-offset: 3px; }
+.thf-card__title { font-size: 1.2rem; margin: .25rem 0 .6rem; }
+.thf-card__title a { color: var(--thf-text); text-decoration: none; }
+.thf-card__title a::after { content: ""; position: absolute; inset: 0; border-radius: var(--thf-radius); }
+.thf-card__title a:hover { color: var(--thf-cyan); text-decoration: underline; }
+.thf-card__title a:focus-visible { outline: none; } /* ring drawn on the card instead */
+.thf-card__excerpt { color: var(--thf-muted); font-size: 1rem; flex: 1; }
+.thf-card__meta { margin-top: 1.1rem !important; font-size: .9rem; color: var(--thf-muted); }
+
+/* Tags carry a text label; color is never the only signal */
+.thf-tag {
+  display: inline-block; align-self: flex-start;
+  font-family: var(--thf-font-head); font-size: .8rem; font-weight: 700; letter-spacing: .06em;
+  padding: .2rem .6rem; border-radius: 6px;
+  background: var(--thf-surface-2); color: var(--thf-cyan); border: 1px solid var(--thf-border);
+  margin: 0;
+}
+.thf-tag--ux  { color: var(--thf-cyan); }
+.thf-tag--hmt { color: var(--thf-green); }
+.thf-tag--xai { color: var(--thf-magenta); }
+.thf-tag--hcd { color: var(--thf-blue); }
+.thf-tag--ui  { color: var(--thf-violet); }
+
+/* Featured post */
+.thf-feature {
+  display: grid; gap: 2rem; align-items: center;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+  background: linear-gradient(135deg, var(--thf-surface) 0%, var(--thf-surface-2) 100%);
+  border: 1px solid var(--thf-border); border-radius: calc(var(--thf-radius) + 6px);
+  padding: clamp(1.5rem, 4vw, 3rem); position: relative;
+}
+.thf-feature:focus-within { outline: 3px solid var(--thf-focus); outline-offset: 3px; }
+.thf-feature h3 { font-size: clamp(1.5rem, 3vw, 2.1rem); margin: .75rem 0 1rem; }
+.thf-feature h3 a { color: var(--thf-text); text-decoration: none; }
+.thf-feature h3 a::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
+.thf-feature h3 a:hover { color: var(--thf-cyan); text-decoration: underline; }
+.thf-feature h3 a:focus-visible { outline: none; }
+.thf-feature__art {
+  aspect-ratio: 16 / 10; border-radius: var(--thf-radius);
+  background:
+    radial-gradient(circle at 30% 35%, rgba(233, 143, 255, .45), transparent 45%),
+    radial-gradient(circle at 70% 65%, rgba(85, 234, 169, .35), transparent 45%),
+    var(--thf-bg);
+  border: 1px solid var(--thf-border); display: grid; place-items: center;
+}
+.thf-feature__art svg { width: 55%; height: auto; }
+
+/* ---------- Topic tiles ---------- */
+.thf-topic {
+  display: flex; flex-direction: column; gap: .35rem;
+  min-height: 100%; padding: 1.4rem;
+  background: var(--thf-surface); border: 1px solid var(--thf-border); border-radius: var(--thf-radius);
+  color: var(--thf-text) !important; text-decoration: none !important;
+  transition: border-color .2s ease, background .2s ease;
+}
+.thf-topic:hover { border-color: var(--thf-cyan); background: var(--thf-surface-2); }
+.thf-topic__abbr { font-family: var(--thf-font-head); font-size: 1.6rem; font-weight: 800; line-height: 1; }
+.thf-topic__name { font-weight: 600; }
+.thf-topic__desc { color: var(--thf-muted); font-size: .95rem; }
+.thf-topic__go { margin-top: auto; padding-top: .5rem; font-size: .9rem; font-weight: 600; color: var(--thf-cyan); }
+
+/* ---------- Callout / CTA ---------- */
+.thf-cta {
+  text-align: center; padding: clamp(2rem, 5vw, 3.5rem);
+  border-radius: calc(var(--thf-radius) + 6px);
+  background: radial-gradient(40rem 18rem at 50% 0%, rgba(179, 155, 255, .18), transparent 70%), var(--thf-surface);
+  border: 1px solid var(--thf-border);
+}
+.thf-cta p { margin-inline: auto; color: var(--thf-muted); }
+.thf-cta .thf-btn-row { justify-content: center; }
+
+/* ---------- Author cards ---------- */
+.thf-author {
+  display: grid; gap: 1.5rem 2rem; align-items: start;
+  grid-template-columns: minmax(0, 160px) 1fr;
+  background: var(--thf-surface); border: 1px solid var(--thf-border);
+  border-radius: calc(var(--thf-radius) + 6px); padding: clamp(1.5rem, 4vw, 2.5rem);
+}
+@media (max-width: 640px) { .thf-author { grid-template-columns: 1fr; } }
+.thf-author__photo {
+  width: 160px; max-width: 100%; aspect-ratio: 1; border-radius: 50%; object-fit: cover;
+  border: 3px solid transparent;
+  background: linear-gradient(var(--thf-surface), var(--thf-surface)) padding-box, var(--thf-grad) border-box;
+}
+.thf-author__initials {
+  display: grid; place-items: center; font-family: var(--thf-font-head); font-size: 2.75rem; font-weight: 800;
+  color: var(--thf-text);
+}
+.thf-author h3 { font-size: 1.6rem; margin-bottom: .25rem; }
+.thf-author__role { color: var(--thf-cyan); font-weight: 600; margin-bottom: 1rem !important; }
+.thf-author__creds { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.25rem 0 0; padding: 0; list-style: none; }
+.thf-author__creds li { font-size: .9rem; padding: .3rem .75rem; border-radius: 999px; background: var(--thf-surface-2); border: 1px solid var(--thf-border); color: var(--thf-text); }
+.thf-author__links { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; margin-top: 1.25rem !important; }
+.thf-author__links a { display: inline-flex; align-items: center; min-height: 44px; }
+
+/* ---------- Values / numbered points ---------- */
+.thf-point { padding: 1.5rem; background: var(--thf-surface); border: 1px solid var(--thf-border); border-radius: var(--thf-radius); }
+.thf-point__num { font-family: var(--thf-font-head); font-weight: 800; font-size: 1rem; color: var(--thf-magenta); margin-bottom: .5rem !important; }
+.thf-point p { color: var(--thf-muted); }
+
+/* ---------- Category page ---------- */
+.thf-chips { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.75rem 0 0; padding: 0; list-style: none; }
+.thf-chips a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: .45rem 1rem;
+  border-radius: 999px; border: 1px solid var(--thf-border-strong);
+  color: var(--thf-text); text-decoration: none; font-weight: 500; font-size: .95rem;
+}
+.thf-chips a:hover { border-color: var(--thf-cyan); color: var(--thf-cyan); }
+.thf-chips a[aria-current="page"] { background: var(--thf-grad-btn); color: var(--thf-on-accent); border-color: transparent; font-weight: 700; }
+
+.thf-postlist { display: grid; gap: 1rem; margin: 0; padding: 0; list-style: none; }
+.thf-row {
+  position: relative; display: grid; gap: .5rem 2rem;
+  grid-template-columns: 1fr auto; align-items: start;
+  padding: 1.5rem; background: var(--thf-surface); border: 1px solid var(--thf-border); border-radius: var(--thf-radius);
+  transition: border-color .2s ease;
+}
+.thf-row:hover { border-color: var(--thf-border-strong); }
+.thf-row:focus-within { outline: 3px solid var(--thf-focus); outline-offset: 3px; }
+.thf-row h3 { font-size: 1.3rem; margin: .5rem 0 .5rem; }
+.thf-row h3 a { color: var(--thf-text); text-decoration: none; }
+.thf-row h3 a::after { content: ""; position: absolute; inset: 0; border-radius: var(--thf-radius); }
+.thf-row h3 a:hover { color: var(--thf-cyan); text-decoration: underline; }
+.thf-row h3 a:focus-visible { outline: none; }
+.thf-row p { color: var(--thf-muted); font-size: 1rem; }
+.thf-row__meta { font-size: .9rem; color: var(--thf-muted); white-space: nowrap; text-align: right; }
+@media (max-width: 640px) { .thf-row { grid-template-columns: 1fr; } .thf-row__meta { text-align: left; } }
+
+.thf-layout { display: grid; gap: 2.5rem; grid-template-columns: minmax(0, 1fr) 300px; align-items: start; }
+@media (max-width: 960px) { .thf-layout { grid-template-columns: 1fr; } }
+.thf-aside { display: grid; gap: 1.25rem; }
+.thf-panel { padding: 1.5rem; background: var(--thf-surface); border: 1px solid var(--thf-border); border-radius: var(--thf-radius); }
+.thf-panel h2 { font-size: 1.1rem; margin-bottom: .75rem; }
+.thf-panel ul { margin: 0; padding: 0; list-style: none; }
+.thf-panel li + li { border-top: 1px solid var(--thf-border); }
+.thf-panel li a { display: flex; align-items: center; min-height: 44px; padding-block: .4rem; }
+
+.thf-pager { margin-top: 2.5rem; }
+.thf-pager ul { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.thf-pager a, .thf-pager span {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 44px; min-height: 44px; padding: 0 .9rem; border-radius: 10px;
+  border: 1px solid var(--thf-border-strong); color: var(--thf-text); text-decoration: none; font-weight: 600;
+}
+.thf-pager a:hover { border-color: var(--thf-cyan); color: var(--thf-cyan); }
+.thf-pager a[aria-current="page"] { background: var(--thf-grad-btn); color: var(--thf-on-accent); border-color: transparent; }
+.thf-pager span[aria-hidden] { border-color: transparent; color: var(--thf-muted); }
+
+/* ---------- Resources ---------- */
+.thf-toc { display: flex; flex-wrap: wrap; gap: .6rem; margin: 1.75rem 0 0; padding: 0; list-style: none; }
+.thf-toc a { display: inline-flex; align-items: center; min-height: 44px; padding: .45rem 1rem; border-radius: 999px; border: 1px solid var(--thf-border-strong); color: var(--thf-text); text-decoration: none; font-weight: 500; }
+.thf-toc a:hover { border-color: var(--thf-cyan); color: var(--thf-cyan); }
+
+.thf-res { display: flex; flex-direction: column; gap: .5rem; padding: 1.4rem; background: var(--thf-surface); border: 1px solid var(--thf-border); border-radius: var(--thf-radius); height: 100%; }
+.thf-res h3 { font-size: 1.1rem; margin: 0; }
+.thf-res p { color: var(--thf-muted); font-size: .97rem; margin: 0; }
+.thf-res__type { font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--thf-violet); margin: 0 !important; }
+.thf-res__link { margin-top: auto !important; padding-top: .5rem; }
+.thf-res__link a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; }
+
+.thf-glossary { display: grid; gap: 0; margin: 0; grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); column-gap: 2.5rem; }
+.thf-glossary div { padding: 1rem 0; border-bottom: 1px solid var(--thf-border); }
+.thf-glossary dt { font-family: var(--thf-font-head); font-weight: 700; color: var(--thf-text); }
+.thf-glossary dt abbr { text-decoration: none; color: var(--thf-cyan); margin-right: .4rem; }
+.thf-glossary dd { margin: .25rem 0 0; color: var(--thf-muted); }
+
+/* =====================================================================
+   SINGLE POST
+   .thf-prose also styles native WordPress block output (paragraphs,
+   headings, lists, quotes, pullquotes, images, tables, code), so posts
+   written in the block editor pick up the look automatically.
+   ===================================================================== */
+
+.thf-progress {
+  position: fixed; inset: 0 0 auto 0; height: 4px; z-index: 9999;
+  background: var(--thf-grad); transform-origin: 0 50%; transform: scaleX(0);
+  pointer-events: none;
+}
+
+.thf-post-head { padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 4vw, 3rem) !important;
+  background: radial-gradient(50rem 24rem at 85% -20%, rgba(233, 143, 255, .14), transparent 60%),
+              radial-gradient(40rem 20rem at 0% 120%, rgba(85, 234, 169, .08), transparent 60%), var(--thf-bg); }
+.thf-post-head__inner { max-width: 860px; }
+.thf-crumbs { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0 0 1.5rem; padding: 0; list-style: none; font-size: .95rem; color: var(--thf-muted); }
+.thf-crumbs li { display: inline-flex; align-items: center; gap: .5rem; }
+.thf-crumbs a { display: inline-flex; align-items: center; min-height: 24px; }
+.thf-post-head h1 { font-size: clamp(2.1rem, 5vw, 3.4rem); max-width: 22ch; margin-top: .9rem; }
+.thf-post-head .thf-lede { max-width: 62ch; }
+
+.thf-byline { display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 1.5rem; margin-top: 2rem; }
+.thf-byline__who { display: flex; align-items: center; gap: .85rem; }
+.thf-avatar {
+  flex: none; width: 52px; height: 52px; border-radius: 50%;
+  display: grid; place-items: center; font-family: var(--thf-font-head); font-weight: 800; font-size: 1.05rem;
+  border: 2px solid transparent; color: var(--thf-text);
+  background: linear-gradient(var(--thf-surface), var(--thf-surface)) padding-box, var(--thf-grad) border-box;
+  object-fit: cover;
+}
+.thf-byline__name { margin: 0 !important; font-weight: 600; }
+.thf-byline__name a { color: var(--thf-text); }
+.thf-byline__role { margin: 0 !important; font-size: .9rem; color: var(--thf-muted); }
+.thf-byline__facts { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; margin: 0; padding: 0; list-style: none; font-size: .95rem; color: var(--thf-muted); }
+
+.thf-post-hero { margin: 0; }
+.thf-post-hero__art {
+  aspect-ratio: 21 / 9; width: 100%; border-radius: calc(var(--thf-radius) + 6px);
+  border: 1px solid var(--thf-border); overflow: hidden; display: block;
+  background:
+    radial-gradient(circle at 25% 40%, rgba(233, 143, 255, .35), transparent 40%),
+    radial-gradient(circle at 75% 60%, rgba(85, 234, 169, .28), transparent 40%),
+    var(--thf-surface);
+}
+.thf-post-hero__art img, .thf-post-hero__art svg { width: 100%; height: 100%; object-fit: cover; display: block; }
+.thf-post-hero figcaption { margin-top: .75rem; font-size: .9rem; color: var(--thf-muted); }
+
+/* Article + sticky contents */
+.thf-post-layout { display: grid; gap: 3rem; grid-template-columns: minmax(0, 1fr) 260px; align-items: start; }
+@media (max-width: 1024px) { .thf-post-layout { grid-template-columns: minmax(0, 1fr); gap: 2rem; } .thf-post-side { order: -1; } }
+.thf-post-side { position: sticky; top: 6rem; display: grid; gap: 1.25rem; }
+@media (max-width: 1024px) { .thf-post-side { position: static; } }
+
+.thf-toc-box { padding: 1.25rem 1.25rem .75rem; background: var(--thf-surface); border: 1px solid var(--thf-border); border-radius: var(--thf-radius); }
+.thf-toc-box__title, .thf-toc-box h2 { display: block; font-family: var(--thf-font-head); font-weight: 700; font-size: .85rem !important; letter-spacing: .1em; text-transform: uppercase; color: var(--thf-muted) !important; margin: 0 0 .5rem !important; }
+.thf-toc-box ol { margin: 0; padding: 0; list-style: none; counter-reset: toc; }
+.thf-toc-box li { counter-increment: toc; }
+.thf-toc-box a {
+  display: flex; gap: .6rem; align-items: baseline; min-height: 40px; padding: .45rem 0 .45rem .75rem;
+  border-left: 2px solid var(--thf-border); color: var(--thf-text); text-decoration: none; font-size: .95rem; line-height: 1.4;
+}
+.thf-toc-box a::before { content: counter(toc, decimal-leading-zero); font-family: var(--thf-font-head); font-size: .8rem; font-weight: 700; color: var(--thf-magenta); }
+.thf-toc-box a:hover { color: var(--thf-cyan); border-left-color: var(--thf-cyan); text-decoration: underline; }
+.thf-toc-box a[aria-current="true"] { border-left-color: var(--thf-cyan); color: var(--thf-cyan); font-weight: 600; }
+
+/* Mobile: collapsible contents */
+.thf-toc-box details > summary { list-style: none; cursor: pointer; display: flex; align-items: center; justify-content: space-between; min-height: 44px; }
+.thf-toc-box details > summary::-webkit-details-marker { display: none; }
+.thf-toc-box details > summary::after { content: "+"; font-size: 1.4rem; color: var(--thf-cyan); line-height: 1; }
+.thf-toc-box details[open] > summary::after { content: "−"; }
+
+.thf-share { padding: 1.25rem; background: var(--thf-surface); border: 1px solid var(--thf-border); border-radius: var(--thf-radius); }
+.thf-share h2 { font-size: .85rem !important; letter-spacing: .1em; text-transform: uppercase; color: var(--thf-muted) !important; margin: 0 0 .5rem !important; }
+.thf-share ul { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.thf-share a, .thf-share button {
+  display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .4rem .9rem;
+  border-radius: 999px; border: 1px solid var(--thf-border-strong); background: transparent;
+  color: var(--thf-text); font: 600 .9rem var(--thf-font-body); text-decoration: none; cursor: pointer;
+}
+.thf-share a:hover, .thf-share button:hover { border-color: var(--thf-cyan); color: var(--thf-cyan); }
+.thf-share [role="status"] { margin: .5rem 0 0 !important; font-size: .9rem; color: var(--thf-green); min-height: 1.4em; }
+
+/* Prose */
+.thf-prose { font-size: 1.125rem; line-height: 1.75; max-width: 72ch; }
+.thf-prose p { margin: 0; max-width: none; }
+/* Vertical rhythm (extra .thf raises specificity over the base .thf p rule) */
+.thf .thf-prose > * { margin-bottom: 0; }
+.thf .thf-prose > * + * { margin-top: 1.4em; }
+.thf .thf-prose > h2 { margin-top: 2.4em; }
+.thf .thf-prose > h3 { margin-top: 1.9em; }
+.thf .thf-prose > :is(h2, h3) + * { margin-top: .7em; }
+.thf-prose > p:first-of-type::first-letter {
+  float: left; font-family: var(--thf-font-head); font-weight: 800; font-size: 3.6em; line-height: .85;
+  margin: .08em .12em 0 0; color: var(--thf-magenta);
+}
+.thf-prose h2 { font-size: clamp(1.6rem, 3vw, 2rem); margin: 2.4em 0 0; padding-top: .2em; scroll-margin-top: 6rem; }
+.thf-prose h2::before { content: ""; display: block; width: 48px; height: 4px; border-radius: 2px; background: var(--thf-grad); margin-bottom: .8rem; }
+.thf-prose h3 { font-size: 1.3rem; margin: 1.9em 0 0; scroll-margin-top: 6rem; }
+.thf-prose strong { color: var(--thf-text); font-weight: 700; }
+.thf-prose em { color: var(--thf-text); }
+.thf-prose ul, .thf-prose ol { margin: 0; padding-left: 1.4em; }
+.thf-prose li + li { margin-top: .5em; }
+.thf-prose ul li::marker { color: var(--thf-cyan); }
+.thf-prose ol li::marker { color: var(--thf-magenta); font-family: var(--thf-font-head); font-weight: 700; }
+.thf-prose hr { border: 0; height: 1px; background: var(--thf-border); margin-block: 2.5em; }
+
+.thf-prose code {
+  font-family: ui-monospace, "SF Mono", Consolas, "Liberation Mono", monospace; font-size: .88em;
+  padding: .12em .4em; border-radius: 6px; background: var(--thf-surface-2); color: var(--thf-green);
+  border: 1px solid var(--thf-border);
+}
+.thf-prose pre, .thf-prose .wp-block-code {
+  margin: 0; padding: 1.25rem 1.4rem; overflow-x: auto; border-radius: var(--thf-radius);
+  background: #070a10; border: 1px solid var(--thf-border); font-size: .95rem; line-height: 1.6; tab-size: 2;
+}
+.thf-prose pre code { padding: 0; border: 0; background: none; color: var(--thf-text); font-size: inherit; }
+
+.thf-prose blockquote, .thf-prose .wp-block-quote {
+  margin-inline: 0; padding: .25rem 0 .25rem 1.4rem; border-left: 4px solid var(--thf-violet);
+  color: var(--thf-text); font-style: italic;
+}
+.thf-prose blockquote cite, .thf-prose .wp-block-quote cite { display: block; margin-top: .6rem; font-style: normal; font-size: .95rem; color: var(--thf-muted); }
+
+.thf-pullquote, .thf-prose .wp-block-pullquote {
+  margin-inline: 0; padding: 1.75rem 0; text-align: left;
+  border-block: 1px solid var(--thf-border);
+}
+.thf-pullquote p, .thf-prose .wp-block-pullquote p {
+  font-family: var(--thf-font-head); font-weight: 700; font-size: clamp(1.4rem, 3vw, 1.85rem); line-height: 1.3; font-style: normal;
+}
+.thf-pullquote blockquote, .thf-prose .wp-block-pullquote blockquote { border: 0; padding: 0; margin: 0; font-style: normal; }
+
+.thf-prose figure { margin-inline: 0; }
+.thf-prose figure img { max-width: 100%; height: auto; border-radius: var(--thf-radius); border: 1px solid var(--thf-border); }
+.thf-prose figcaption, .thf-prose .wp-element-caption { margin-top: .75rem; font-size: .92rem; line-height: 1.5; color: var(--thf-muted); }
+
+.thf-figure-diagram { padding: 1.5rem; background: var(--thf-surface); border: 1px solid var(--thf-border); border-radius: var(--thf-radius); }
+.thf-figure-diagram svg { width: 100%; height: auto; display: block; }
+
+.thf-table-wrap { overflow-x: auto; border: 1px solid var(--thf-border); border-radius: var(--thf-radius); }
+.thf-table-wrap:focus-visible { outline: 3px solid var(--thf-focus); outline-offset: 3px; }
+.thf-prose table { width: 100%; border-collapse: collapse; font-size: 1rem; min-width: 560px; }
+.thf-prose caption { caption-side: top; text-align: left; padding: 1rem 1.1rem .25rem; font-weight: 600; color: var(--thf-text); }
+.thf-prose th, .thf-prose td { padding: .85rem 1.1rem; text-align: left; vertical-align: top; border-bottom: 1px solid var(--thf-border); }
+.thf-prose thead th { font-family: var(--thf-font-head); font-size: .9rem; letter-spacing: .04em; color: var(--thf-cyan); background: var(--thf-surface-2); }
+.thf-prose tbody th { font-weight: 600; color: var(--thf-text); }
+.thf-prose td { color: var(--thf-muted); }
+.thf-prose tbody tr:last-child > * { border-bottom: 0; }
+
+/* Callouts: icon + text label, never color alone */
+.thf-callout { display: grid; grid-template-columns: auto 1fr; gap: .9rem; padding: 1.25rem 1.4rem; border-radius: var(--thf-radius); background: var(--thf-surface); border: 1px solid var(--thf-border); border-left: 4px solid var(--thf-cyan); }
+.thf-callout svg { width: 24px; height: 24px; margin-top: .2rem; }
+.thf-callout__label { margin: 0 0 .25rem !important; font-family: var(--thf-font-head); font-weight: 700; font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; color: var(--thf-cyan); }
+.thf-callout p { font-size: 1.02rem; }
+.thf-callout--field { border-left-color: var(--thf-green); }
+.thf-callout--field .thf-callout__label { color: var(--thf-green); }
+.thf-callout--warn { border-left-color: var(--thf-focus); }
+.thf-callout--warn .thf-callout__label { color: var(--thf-focus); }
+
+.thf-takeaways { padding: 1.75rem; border-radius: calc(var(--thf-radius) + 4px); border: 1px solid var(--thf-border);
+  background: radial-gradient(30rem 12rem at 100% 0%, rgba(179, 155, 255, .14), transparent 70%), var(--thf-surface); }
+.thf-takeaways h2 { margin-top: 0 !important; font-size: 1.35rem !important; }
+.thf-takeaways h2::before { display: none !important; }
+
+.thf-refs { font-size: .97rem; color: var(--thf-muted); }
+.thf-refs li { padding-left: .25rem; }
+
+.thf-sup a { font-size: .75em; font-weight: 700; text-decoration: none; padding: 0 .15em; vertical-align: super; line-height: 0; }
+.thf-sup a:hover { text-decoration: underline; }
+
+/* Post footer pieces */
+.thf-post-tags { display: flex; flex-wrap: wrap; gap: .5rem; margin: 0; padding: 0; list-style: none; }
+.thf-post-tags a { display: inline-flex; align-items: center; min-height: 44px; padding: .4rem .95rem; border-radius: 999px; border: 1px solid var(--thf-border-strong); color: var(--thf-text); text-decoration: none; font-size: .93rem; }
+.thf-post-tags a:hover { border-color: var(--thf-cyan); color: var(--thf-cyan); }
+
+.thf-post-nav { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
+.thf-post-nav a {
+  display: flex; flex-direction: column; gap: .35rem; min-height: 100%; padding: 1.25rem 1.4rem;
+  border-radius: var(--thf-radius); background: var(--thf-surface); border: 1px solid var(--thf-border);
+  color: var(--thf-text); text-decoration: none;
+}
+.thf-post-nav a:hover { border-color: var(--thf-cyan); }
+.thf-post-nav a:hover .thf-post-nav__title { color: var(--thf-cyan); text-decoration: underline; }
+.thf-post-nav__dir { font-size: .85rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--thf-muted); }
+.thf-post-nav__title { font-family: var(--thf-font-head); font-weight: 700; font-size: 1.1rem; line-height: 1.35; }
+.thf-post-nav .thf-post-nav__next { text-align: right; }
+
+.thf-author--compact { grid-template-columns: 96px 1fr; }
+.thf-author--compact .thf-author__photo { width: 96px; font-size: 1.6rem; }
+@media (max-width: 640px) { .thf-author--compact { grid-template-columns: 1fr; } }
+
+/* ---------- Utilities ---------- */
+.thf-sr-only {
+  position: absolute !important; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+
+/* ---------- Motion & high contrast ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .thf *, .thf *::before, .thf *::after { transition: none !important; animation: none !important; }
+  .thf-card:hover { transform: none; }
+  .thf-progress { display: none; }
+}
+@media print {
+  .thf { background: #fff; color: #000; }
+  .thf-progress, .thf-post-side, .thf-post-nav, .thf-related, .thf-hero .thf-circuit { display: none !important; }
+}
+@media (forced-colors: active) {
+  .thf-card, .thf-row, .thf-topic, .thf-res, .thf-panel, .thf-feature, .thf-author, .thf-callout, .thf-toc-box, .thf-share, .thf-takeaways, .thf-post-nav a { border: 1px solid CanvasText; }
+  .thf-btn { border: 2px solid ButtonText; }
+}
+</style></head><body><main><!-- THE [Hu]MAN FACTOR : Single blog post (example)
+     Two ways to use this:
+     1. Static: paste into a Custom HTML block on a post (admins only; WordPress strips
+        <script> and some attributes for lower roles).
+     2. Template: rebuild in the Site Editor's "Single Posts" template using the same
+        class names (see README). Body content written in the block editor is styled
+        automatically by .thf-prose. -->
+<div class="thf thf--bleed">
+  <div class="thf-progress" aria-hidden="true"></div>
+
+  <article aria-labelledby="thf-post-title">
+
+    <header class="thf-post-head">
+      <div class="thf-wrap">
+        <div class="thf-post-head__inner">
+          <nav aria-label="Breadcrumb">
+            <ol class="thf-crumbs">
+              <li><a href="/">Home</a><span aria-hidden="true">/</span></li>
+              <li><a href="/blog/">Blog</a><span aria-hidden="true">/</span></li>
+              <li><a href="/category/hmt/">Human-Machine Teaming</a></li>
+            </ol>
+          </nav>
+          <a class="thf-tag thf-tag--hmt" href="/category/hmt/" style="text-decoration:none;">HMT</a>
+          <h1 id="thf-post-title">Calibrated Trust Is a Design Problem, Not a Training Problem</h1>
+          <p class="thf-lede">Operators over-trust the machine on good days and abandon it on bad ones. Training alone cannot fix that. The interface has to show people when to lean in and when to step back.</p>
+
+          <div class="thf-byline">
+            <div class="thf-byline__who">
+              <span class="thf-avatar" aria-hidden="true">AS</span>
+              <div>
+                <p class="thf-byline__name"><a href="/about/">Adam Z. Stavely</a></p>
+                <p class="thf-byline__role">Founder and Lead Author</p>
+              </div>
+            </div>
+            <ul class="thf-byline__facts">
+              <li>Published <time datetime="2026-10-01">October 1, 2026</time></li>
+              <li>12 min read</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <section style="padding-block:0 clamp(2rem,4vw,3rem);border-top:0;">
+      <div class="thf-wrap">
+        <figure class="thf-post-hero">
+          <div class="thf-post-hero__art">
+            <!-- Replace this SVG with <img src="..." alt="Describe the image" width="1600" height="686"> -->
+            <svg viewBox="0 0 1050 450" role="img" aria-labelledby="thf-hero-alt" preserveAspectRatio="xMidYMid slice">
+              <title id="thf-hero-alt">Illustration: a pilot's instrument gauge and an AI chip linked by circuit traces</title>
+              <g fill="none" stroke-width="5" stroke-linecap="round">
+                <circle cx="330" cy="225" r="110" stroke="#e98fff"/>
+                <circle cx="330" cy="225" r="80" stroke="#2b3652"/>
+                <path d="M330 225 L395 170" stroke="#4fe3f2" stroke-width="7"/>
+                <path d="M250 225 h20 M390 225 h20 M330 145 v20 M330 285 v20" stroke="#b39bff"/>
+                <path d="M440 225 H560 l40 -40 H660" stroke="#55eaa9"/>
+                <path d="M440 260 H580 l40 20 H660" stroke="#4fe3f2"/>
+                <path d="M440 190 H540 l30 -50 H660" stroke="#6cc0ff"/>
+                <rect x="660" y="120" width="200" height="200" rx="32" stroke="#4fe3f2"/>
+                <polygon points="760,165 795,185 795,225 760,245 725,225 725,185" stroke="#e98fff"/>
+                <path d="M705 300 Q760 255 815 300" stroke="#55eaa9"/>
+                <path d="M700 120 V95 M740 120 V95 M780 120 V95 M820 120 V95 M700 345 V320 M740 345 V320 M780 345 V320 M820 345 V320" stroke="#6cc0ff"/>
+              </g>
+              <circle cx="330" cy="225" r="9" fill="#4fe3f2"/>
+            </svg>
+          </div>
+          <figcaption>The cockpit taught aviation that trust has to be read off the instruments, not assumed.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section style="padding-top:0;border-top:0;" aria-label="Article">
+      <div class="thf-wrap thf-post-layout">
+
+        <div class="thf-prose">
+          <p>Every AI-enabled system I have helped field has shipped with the same quiet assumption: if users trust the system the wrong amount, we will fix it in training. Add a module. Add a slide about limitations. Add a checkbox acknowledging that the model "may produce errors." Then watch, a few months later, as operators either rubber-stamp every recommendation or stop opening the tool at all.</p>
+
+          <p>That pattern is not a training failure. It is a design failure that we keep sending to the training department.</p>
+
+          <h2 id="misdiagnosis">The problem we keep misdiagnosing</h2>
+          <p>Human factors researchers have described this for decades. Parasuraman and Riley called the two failure modes <strong>misuse</strong> (relying on automation when you shouldn't) and <strong>disuse</strong> (ignoring automation when you should rely on it).<span class="thf-sup"><a href="#ref-1" aria-label="Reference 1">1</a></span> Both are rational responses to the information a person actually has. When the interface presents every output with the same visual confidence, operators have no basis to treat a strong answer differently from a weak one.</p>
+
+          <p>So they generalize. A string of good results builds blanket trust. One visible, embarrassing miss destroys it. Neither reaction tracks how reliable the system actually is on the case in front of them.</p>
+
+          <div class="thf-pullquote">
+            <blockquote>
+              <p>If the interface treats every answer the same, people will too.</p>
+            </blockquote>
+          </div>
+
+          <h2 id="training">Why training can't close the gap</h2>
+          <p>Training works on knowledge that is stable: how the system was built, what data it saw, which categories it handles poorly. That knowledge is useful. But trust calibration is a judgment made <em>per decision</em>, under time pressure, about a system whose reliability shifts with every input.</p>
+          <p>Asking an analyst to recall a training slide about edge cases while triaging a queue at the end of a twelve-hour shift is asking memory to do the interface's job. Dzindolet and colleagues found that people's reliance on an automated aid tracked their perception of its reliability, and that perception was easily skewed by salient errors.<span class="thf-sup"><a href="#ref-3" aria-label="Reference 3">3</a></span> Perception is shaped by what people see, moment to moment. That puts it squarely in the designer's lane.</p>
+
+          <div class="thf-callout thf-callout--field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#55eaa9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M2 12h3l3-8 4 16 3-8h7"/></svg>
+            <div>
+              <p class="thf-callout__label">From the cockpit</p>
+              <p>Pilots are not trained to "trust the autopilot." They are trained to cross-check it, and every mode change is annunciated on the panel. Calibration is designed into the display, then reinforced by training. Not the other way around.</p>
+            </div>
+          </div>
+
+          <h2 id="calibration">What calibrated trust actually looks like</h2>
+          <p>Lee and See define appropriate trust as trust that matches the system's true capability.<span class="thf-sup"><a href="#ref-2" aria-label="Reference 2">2</a></span> The goal is not more trust or less trust. It is trust that moves with the evidence.</p>
+
+          <figure class="thf-figure-diagram">
+            <svg viewBox="0 0 640 400" role="img" aria-labelledby="thf-fig1-t thf-fig1-d">
+              <title id="thf-fig1-t">Trust versus capability</title>
+              <desc id="thf-fig1-d">A chart with system capability on the horizontal axis and operator trust on the vertical axis. A diagonal line marks calibrated trust. The region above the line is labeled over-trust, leading to misuse. The region below is labeled under-trust, leading to disuse.</desc>
+              <path d="M80 340 L600 40 L80 40 Z" fill="rgba(233,143,255,.10)"/>
+              <path d="M80 340 L600 40 L600 340 Z" fill="rgba(108,192,255,.10)"/>
+              <path d="M80 30 V340 H610" fill="none" stroke="#6b7a9c" stroke-width="2"/>
+              <path d="M80 340 L600 40" stroke="#55eaa9" stroke-width="4" stroke-dasharray="10 8"/>
+              <g font-family="Inter, system-ui, sans-serif" font-size="17" fill="#eef2f8">
+                <text x="345" y="372" text-anchor="middle">System capability →</text>
+                <text x="30" y="190" text-anchor="middle" transform="rotate(-90 30 190)">Operator trust →</text>
+              </g>
+              <g font-family="Sora, system-ui, sans-serif" font-weight="700" font-size="19">
+                <text x="130" y="95" fill="#e98fff">Over-trust</text>
+                <text x="130" y="120" fill="#b3bdd0" font-family="Inter, system-ui, sans-serif" font-weight="400" font-size="16">leads to misuse</text>
+                <text x="440" y="290" fill="#6cc0ff">Under-trust</text>
+                <text x="440" y="315" fill="#b3bdd0" font-family="Inter, system-ui, sans-serif" font-weight="400" font-size="16">leads to disuse</text>
+                <text x="420" y="130" fill="#55eaa9" transform="rotate(-30 420 130)">Calibrated</text>
+              </g>
+            </svg>
+            <figcaption>Figure 1. Calibration is a line, not a level. Adapted from Lee and See (2004).</figcaption>
+          </figure>
+
+          <p>Notice what this implies. A well-calibrated operator will sometimes trust the system <em>a lot</em> and sometimes barely at all, on the same day, with the same model. The interface has to give them enough signal to move along that line.</p>
+
+          <h2 id="moves">Four design moves that shift trust</h2>
+
+          <h3 id="move-1">1. Show confidence where the decision happens</h3>
+          <p>Confidence buried in a details panel might as well not exist. Put it next to the recommendation, in a form people can read at a glance. Qualitative tiers (strong, moderate, weak) often work better than raw percentages, which invite false precision.</p>
+
+          <h3 id="move-2">2. Make the system's reasoning inspectable on demand</h3>
+          <p>Not every user needs an explanation every time. Offer a one-click path to the evidence behind a recommendation so that skeptical users can check, and confident users aren't slowed down.</p>
+
+          <h3 id="move-3">3. Announce when the ground shifts</h3>
+          <p>Borrow the cockpit's mode annunciator. When an input falls outside the conditions the model handles well, say so plainly, before the operator acts.</p>
+
+          <h3 id="move-4">4. Close the loop with outcomes</h3>
+          <p>People calibrate from feedback. When a recommendation is later confirmed or overturned, show it. Without that signal, trust drifts toward whichever errors were most memorable.</p>
+
+          <div class="thf-table-wrap" role="region" aria-labelledby="thf-tbl-cap" tabindex="0">
+            <table>
+              <caption id="thf-tbl-cap">Table 1. Design moves and the failure mode each one targets</caption>
+              <thead>
+                <tr><th scope="col">Design move</th><th scope="col">Targets</th><th scope="col">Example</th></tr>
+              </thead>
+              <tbody>
+                <tr><th scope="row">Inline confidence</th><td>Misuse</td><td>A "weak match" badge beside the entity resolution result</td></tr>
+                <tr><th scope="row">Inspectable reasoning</th><td>Both</td><td>"Why this?" reveals the three strongest supporting sources</td></tr>
+                <tr><th scope="row">Shift annunciation</th><td>Misuse</td><td>Banner: "Input language outside training coverage"</td></tr>
+                <tr><th scope="row">Outcome feedback</th><td>Disuse</td><td>Weekly digest of confirmed and overturned recommendations</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="thf-callout thf-callout--warn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffe066" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 2 20h20L12 3z"/><path d="M12 10v4M12 17h.01"/></svg>
+            <div>
+              <p class="thf-callout__label">Watch out</p>
+              <p>Confidence indicators are only as honest as the model's calibration. If a model reports 90% confidence and is right 60% of the time, a better badge makes things worse. Validate the numbers before you design around them.</p>
+            </div>
+          </div>
+
+          <h2 id="team">What this means for your team</h2>
+          <p>Treat trust calibration as a product requirement, not a training objective. Write user stories for it. Test it. A usability session for an AI feature should ask not only "could they complete the task?" but "did their reliance match the system's accuracy on that task?"</p>
+          <p>That second question is harder to measure. It is also the one that determines whether the system makes your people better or quietly makes them worse.</p>
+
+          <aside class="thf-takeaways" aria-labelledby="thf-takeaways-h">
+            <h2 id="thf-takeaways-h">Key takeaways</h2>
+            <ul>
+              <li>Over-trust and under-trust are both rational responses to an interface that hides reliability.</li>
+              <li>Training builds stable knowledge. Calibration is a per-decision judgment, so it belongs in the interface.</li>
+              <li>Show confidence inline, make reasoning inspectable, annunciate shifts, and feed back outcomes.</li>
+              <li>Test reliance against accuracy, not just task completion.</li>
+            </ul>
+          </aside>
+
+          <hr>
+
+          <h2 id="references">References</h2>
+          <ol class="thf-refs">
+            <li id="ref-1">Parasuraman, R., and Riley, V. (1997). Humans and automation: Use, misuse, disuse, abuse. <em>Human Factors, 39</em>(2), 230–253. <a href="https://doi.org/10.1518/001872097778543886">doi:10.1518/001872097778543886</a></li>
+            <li id="ref-2">Lee, J. D., and See, K. A. (2004). Trust in automation: Designing for appropriate reliance. <em>Human Factors, 46</em>(1), 50–80. <a href="https://doi.org/10.1518/hfes.46.1.50_30392">doi:10.1518/hfes.46.1.50_30392</a></li>
+            <li id="ref-3">Dzindolet, M. T., Peterson, S. A., Pomranky, R. A., Pierce, L. G., and Beck, H. P. (2003). The role of trust in automation reliance. <em>International Journal of Human-Computer Studies, 58</em>(6), 697–718. <a href="https://doi.org/10.1016/S1071-5819(03)00038-7">doi:10.1016/S1071-5819(03)00038-7</a></li>
+          </ol>
+        </div>
+
+        <aside class="thf-post-side" aria-label="Article tools">
+          <nav class="thf-toc-box" aria-label="In this article">
+            <details open>
+              <summary><span class="thf-toc-box__title">In this article</span></summary>
+              <ol>
+                <li><a href="#misdiagnosis">The problem we keep misdiagnosing</a></li>
+                <li><a href="#training">Why training can't close the gap</a></li>
+                <li><a href="#calibration">What calibrated trust looks like</a></li>
+                <li><a href="#moves">Four design moves</a></li>
+                <li><a href="#team">What this means for your team</a></li>
+                <li><a href="#references">References</a></li>
+              </ol>
+            </details>
+          </nav>
+          <div class="thf-share">
+            <h2 id="thf-share-h">Share</h2>
+            <ul aria-labelledby="thf-share-h">
+              <li><a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fexample.com%2Fcalibrated-trust%2F">LinkedIn<span class="thf-sr-only"> (opens LinkedIn share)</span></a></li>
+              <li><a href="mailto:?subject=Calibrated%20Trust%20Is%20a%20Design%20Problem&amp;body=https%3A%2F%2Fexample.com%2Fcalibrated-trust%2F">Email</a></li>
+              <li><button type="button" class="thf-copy">Copy link</button></li>
+            </ul>
+            <p role="status" class="thf-copy-status"></p>
+          </div>
+        </aside>
+
+      </div>
+    </section>
+
+    <footer>
+      <section aria-labelledby="thf-post-tags-h">
+        <div class="thf-wrap" style="display:grid;gap:2.5rem;">
+          <div>
+            <h2 id="thf-post-tags-h" class="thf-sr-only">Tags</h2>
+            <ul class="thf-post-tags">
+              <li><a href="/tag/trust-calibration/">Trust calibration</a></li>
+              <li><a href="/tag/automation-bias/">Automation bias</a></li>
+              <li><a href="/tag/aviation/">Aviation</a></li>
+              <li><a href="/tag/xai/">Explainable AI</a></li>
+            </ul>
+          </div>
+
+          <div class="thf-author thf-author--compact">
+            <span class="thf-author__photo thf-author__initials" aria-hidden="true">AS</span>
+            <div>
+              <h2 id="thf-bio-h" style="font-size:1.35rem;margin-bottom:.25rem;">About Adam Z. Stavely</h2>
+              <p class="thf-author__role">Founder and Lead Author</p>
+              <p>Technical Director of a 200-plus engineer software organization, D.Eng. candidate at Penn State researching continuous trust calibration in AI-assisted intelligence analysis, and helicopter CFI with more than 2,000 flight hours.</p>
+              <p class="thf-author__links"><a href="/about/">Full bio</a><a href="/author/adam/">More posts by Adam</a></p>
+            </div>
+          </div>
+
+          <nav class="thf-post-nav" aria-label="More posts">
+            <a href="#"><span class="thf-post-nav__dir">← Previous post</span><span class="thf-post-nav__title">Explanations Nobody Reads: Rethinking XAI for Operators</span></a>
+            <a href="#" class="thf-post-nav__next"><span class="thf-post-nav__dir">Next post →</span><span class="thf-post-nav__title">Designing the Handoff: When the Machine Should Ask for Help</span></a>
+          </nav>
+        </div>
+      </section>
+    </footer>
+  </article>
+
+  <section class="thf-related" aria-labelledby="thf-related-h">
+    <div class="thf-wrap">
+      <div class="thf-section-head"><h2 id="thf-related-h">Keep reading</h2></div>
+      <ul class="thf-grid thf-list-reset">
+        <li><article class="thf-card"><p class="thf-tag thf-tag--hmt">HMT</p><h3 class="thf-card__title"><a href="#">The Cockpit Already Solved This: Automation Lessons from Aviation</a></h3><p class="thf-card__excerpt">Mode confusion and automation surprise are decades-old problems with decades-old fixes.</p><p class="thf-card__meta"><time datetime="2026-09-17">Sep 17, 2026</time> · 11 min read</p></article></li>
+        <li><article class="thf-card"><p class="thf-tag thf-tag--ui">UI</p><h3 class="thf-card__title"><a href="#">Confidence Is Not a Percentage: Visualizing Model Uncertainty</a></h3><p class="thf-card__excerpt">Comparing bands, tiers, and frequency framing for non-specialists.</p><p class="thf-card__meta"><time datetime="2026-08-27">Aug 27, 2026</time> · 7 min read</p></article></li>
+        <li><article class="thf-card"><p class="thf-tag thf-tag--xai">XAI</p><h3 class="thf-card__title"><a href="#">Explanations Nobody Reads: Rethinking XAI for Operators</a></h3><p class="thf-card__excerpt">What a useful explanation looks like at 0300.</p><p class="thf-card__meta"><time datetime="2026-09-24">Sep 24, 2026</time> · 9 min read</p></article></li>
+      </ul>
+    </div>
+  </section>
+
+  <script>
+  (function () {
+    var root = document.currentScript && document.currentScript.closest('.thf');
+    if (!root) return;
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Reading progress (decorative, hidden from assistive tech)
+    var bar = root.querySelector('.thf-progress');
+    var prose = root.querySelector('.thf-prose');
+    if (bar && prose && !reduce) {
+      var tick = function () {
+        var r = prose.getBoundingClientRect();
+        var total = r.height - window.innerHeight;
+        var p = total > 0 ? Math.min(1, Math.max(0, -r.top / total)) : 0;
+        bar.style.transform = 'scaleX(' + p + ')';
+      };
+      window.addEventListener('scroll', tick, { passive: true });
+      tick();
+    }
+
+    // Highlight current section in contents
+    var links = root.querySelectorAll('.thf-toc-box a[href^="#"]');
+    if ('IntersectionObserver' in window && links.length) {
+      var map = {};
+      links.forEach(function (a) { map[a.getAttribute('href').slice(1)] = a; });
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting && map[e.target.id]) {
+            links.forEach(function (a) { a.removeAttribute('aria-current'); });
+            map[e.target.id].setAttribute('aria-current', 'true');
+          }
+        });
+      }, { rootMargin: '-20% 0px -70% 0px' });
+      Object.keys(map).forEach(function (id) { var el = document.getElementById(id); if (el) io.observe(el); });
+    }
+
+    // Collapse contents by default on small screens
+    var det = root.querySelector('.thf-toc-box details');
+    if (det && window.matchMedia('(max-width: 1024px)').matches) det.removeAttribute('open');
+
+    // Copy link with a polite status announcement
+    var btn = root.querySelector('.thf-copy');
+    var status = root.querySelector('.thf-copy-status');
+    if (btn && status) {
+      btn.addEventListener('click', function () {
+        var url = window.location.href.split('#')[0];
+        var done = function (msg) { status.textContent = msg; setTimeout(function () { status.textContent = ''; }, 4000); };
+        if (navigator.clipboard) {
+          navigator.clipboard.writeText(url).then(function () { done('Link copied to clipboard.'); }, function () { done('Copy failed. The address is ' + url); });
+        } else { done('Copy is not supported here. The address is ' + url); }
+      });
+    }
+  })();
+  </script>
+</div>
+</main></body></html>
